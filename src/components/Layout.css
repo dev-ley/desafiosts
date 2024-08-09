@@ -1,0 +1,46 @@
+/* Container do Layout */
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Menu */
+  .menu {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+  }
+  
+  /* Navegação */
+  nav {
+    background-color: #4a90e2;
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  /* Links de navegação */
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    margin: 0 10px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  /* Efeito de hover nos links */
+  nav a:hover {
+    background-color: #003d7d;
+    color: #fff;
+  }
+  
+  /* Efeito de link ativo */
+  nav a.active {
+    background-color: #003d7d;
+    color: white;
+  }
+  
