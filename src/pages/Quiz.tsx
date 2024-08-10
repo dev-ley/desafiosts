@@ -27,6 +27,11 @@ const embaralharArray = <T,>(array: T[]): T[] => {
     .map(({ item }) => item);
 };
 
+// Função para embaralhar as opções de uma questão
+const embaralharOpcoes = (opcoes: Opcao[]): Opcao[] => {
+  return embaralharArray(opcoes);
+};
+
 const Quiz = () => {
   // Estados para controlar o quiz
   const [questoesEmbaralhadas, setQuestoesEmbaralhadas] = useState<Questao[]>([]);
@@ -35,12 +40,23 @@ const Quiz = () => {
   const [perguntaAtual, setPerguntaAtual] = useState<number>(0);
   const [quizFinalizado, setQuizFinalizado] = useState<boolean>(false);
   const [quizIniciado, setQuizIniciado] = useState<boolean>(false); // Verifica se o quiz foi iniciado
+  const [opcoesEmbaralhadas, setOpcoesEmbaralhadas] = useState<Opcao[]>([]);
 
   // Embaralha o array de questões no início e armazena em um estado
   useEffect(() => {
     const questoesEmbaralhadas = embaralharArray(quizData); // Embaralha todas as questões no início
     setQuestoesEmbaralhadas(questoesEmbaralhadas);
   }, []);
+
+  // Atualiza as opções embaralhadas quando a questão atual muda
+  useEffect(() => {
+    if (questoesSelecionadas.length > 0) {
+      const questaoAtual = questoesSelecionadas[perguntaAtual];
+      if (questaoAtual) {
+        setOpcoesEmbaralhadas(embaralharOpcoes(questaoAtual.opcoes));
+      }
+    }
+  }, [questoesSelecionadas, perguntaAtual]);
 
   // Função para lidar com a resposta do quiz
   const resposta = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +69,6 @@ const Quiz = () => {
       console.log('acertou!');
       setTotal(prevTotal => prevTotal + 10);
       audioclear.play(); // Tocar o áudio ao clicar no botão
-
 
       if (spanElement) spanElement.classList.add('acertou');
     } else {
@@ -146,7 +161,7 @@ const Quiz = () => {
               <>
                 <h3>{questaoAtual ? questaoAtual.pergunta : 'Carregando...'}</h3>
                 <div className="quiz-options">
-                  {questaoAtual ? questaoAtual.opcoes.map((opcao: Opcao) => (
+                  {questaoAtual ? opcoesEmbaralhadas.map((opcao: Opcao) => (
                     <label key={opcao.valor}>
                       <input
                         onChange={resposta}
